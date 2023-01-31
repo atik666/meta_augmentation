@@ -52,19 +52,19 @@ class MiniImagenet(Dataset):
             self.transform_query = transforms.Compose([lambda x: Image.open(x).convert('RGB'),
                                                   transforms.RandomHorizontalFlip(0.5),
                                                   transforms.RandomResizedCrop(self.resize,(0.8,1.0)),
+                                                  transforms.ToTensor(),
+                                                  transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
+                                                  #transforms.GaussianBlur(kernel_size=(7, 13), sigma=(9, 11)),
+                                                  #transforms.RandomRotation(degrees=(60, 90)),
+                                                  transforms.RandomInvert(p=0.5),
+                                                  transforms.GaussianBlur(kernel_size=9),
                                                   transforms.RandomApply(
-                                                      
-                                                  transforms.RandomApply(
-                                                      transforms.GaussianBlur((3, 3), (0.1, 2.0)), p=0.5),
                                                     [transforms.ColorJitter(
                                                       0.8*self.s, 
                                                       0.8*self.s, 
                                                       0.8*self.s, 
                                                       0.2*self.s)], p = 0.8),
-                                                    transforms.RandomGrayscale(p=0.2),
-                                                    transforms.ToTensor(),
-                                                    transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
-                                                    ])
+                                                    transforms.RandomGrayscale(p=0.2)])
         else:
             self.transform = transforms.Compose([lambda x: Image.open(x).convert('RGB'),
                                                  transforms.Resize((self.resize, self.resize)),
@@ -199,7 +199,7 @@ class MiniImagenet(Dataset):
             flatten_support_x = [os.path.join(self.path, self.support_x_batch[index][item])
                                          for item in range(len(self.support_x_batch[index]))]
             
-            flatten_query_x = np.repeat(flatten_support_x,self.n_way).tolist()
+            flatten_query_x = np.repeat(flatten_support_x,self.k_query).tolist()
             
             for i, path in enumerate(flatten_support_x):
                 support_x[i] = self.transform(path)
@@ -209,7 +209,7 @@ class MiniImagenet(Dataset):
             support_y = np.arange(self.n_way)
             np.random.shuffle(support_y)
             
-            query_y = np.repeat(support_y,self.n_way)
+            query_y = np.repeat(support_y,self.k_query)
             
             return support_x, torch.LongTensor(support_y), query_x, torch.LongTensor(query_y)
         
@@ -279,7 +279,7 @@ def main():
     n_way = 5
     epochs = 25
     k_shot = 1
-    k_query = 5
+    k_query = 1
 
     torch.manual_seed(222)
     torch.cuda.manual_seed_all(222)
@@ -319,7 +319,7 @@ def main():
     
     train_path = '/home/atik/Documents/UMAML_FSL/data/unsupervised/'
     test_path = '/home/atik/Documents/UMAML_FSL/data/'
-    model_path = '/home/atik/Documents/Meta Augmentation/model.pth'
+    model_path = '/home/atik/Documents/Meta Augmentation/model_%s.pth' %k_shot
     
     mini_train = MiniImagenet(train_path, mode='train', n_way=n_way, k_shot=k_shot,
                         k_query=k_query,

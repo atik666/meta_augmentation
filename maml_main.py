@@ -486,11 +486,12 @@ def mean_confidence_interval(accs, confidence=0.95):
     return m, h
 
 
-n_way = 5
-epochs = 25
-
-
 def main():
+    
+    n_way = 5
+    epochs = 25
+    k_shot = 1
+    k_query = 1
 
     torch.manual_seed(222)
     torch.cuda.manual_seed_all(222)
@@ -521,9 +522,9 @@ def main():
     device = torch.device('cuda:0')
     maml = Meta(config).to(device)
     
-    #model_path = '/home/atik/Documents/Meta Augmentation/model.pth'
+    model_path = '/home/atik/Documents/Meta Augmentation/model_%s.pth' %k_shot
     
-    #maml.load_state_dict(torch.load(model_path))
+    maml.load_state_dict(torch.load(model_path))
 
     tmp = filter(lambda x: x.requires_grad, maml.parameters())
     num = sum(map(lambda x: np.prod(x.shape), tmp))
@@ -533,11 +534,11 @@ def main():
     # batchsz here means total episode number
     
     path = '/home/atik/Documents/UMAML_FSL/data/'
-    mini_train = MiniImagenet(path, mode='train', n_way=5, k_shot=5,
-                        k_query=5,
+    mini_train = MiniImagenet(path, mode='train', n_way=5, k_shot=k_shot,
+                        k_query=k_query,
                         batchsz=10000, resize=84)
-    mini_test = MiniImagenet(path, mode='test', n_way=5, k_shot=5,
-                             k_query=50,
+    mini_test = MiniImagenet(path, mode='test', n_way=5, k_shot=k_shot,
+                             k_query=k_query,
                              batchsz=100, resize=84)
     
 

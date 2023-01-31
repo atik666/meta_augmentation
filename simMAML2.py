@@ -155,8 +155,6 @@ class MiniImagenet(Dataset):
         flatten_support_x = [os.path.join(self.path, item)
                              for sublist in self.support_x_batch[index] for item in sublist]
         
-        print(flatten_support_x)
-        
         # support_y = np.array(
         #     [self.img2label[item[:9]]  # filename:n0153282900000005.jpg, the first 9 characters treated as label
         #      for sublist in self.support_x_batch[index] for item in sublist]).astype(np.int32)
@@ -170,6 +168,7 @@ class MiniImagenet(Dataset):
 
         flatten_query_x = [os.path.join(self.path, item)
                            for sublist in self.query_x_batch[index] for item in sublist]
+        
         # query_y = np.array([self.img2label[item[:9]]
         #                     for sublist in self.query_x_batch[index] for item in sublist]).astype(np.int32)
         
@@ -221,7 +220,7 @@ def main():
     
     n_way = 5
     epochs = 25
-    k_shot = 5
+    k_shot = 1
     k_query = 5
 
     torch.manual_seed(222)

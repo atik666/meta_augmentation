@@ -23,7 +23,7 @@ for i in range(len(filenames)):
 
 selected_cls = np.arange(5)
 
-selected_imgs_idx = np.random.choice(len(img), 5, False)
+selected_imgs_idx = np.random.choice(len(img), 10, False)
 
 
 support_x_batch = []  # support set batch
