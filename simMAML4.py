@@ -319,7 +319,7 @@ def main():
     
     train_path = '/home/atik/Documents/UMAML_FSL/data/unsupervised/'
     test_path = '/home/atik/Documents/UMAML_FSL/data/'
-    model_path = '/home/atik/Documents/Meta Augmentation/model_%s.pth' %k_shot
+    model_path = '/home/atik/Documents/Meta Augmentation/model_%ss_%sq.pth' %(k_shot,k_query)
     
     mini_train = MiniImagenet(train_path, mode='train', n_way=n_way, k_shot=k_shot,
                         k_query=k_query,
@@ -328,6 +328,7 @@ def main():
                              k_query=k_query,
                              batchsz=100, resize=84)
     
+    accuracies = []
     for epoch in tqdm(range(epochs)):
         # fetch meta_batchsz num of episode each time
         db = DataLoader(mini_train, batch_size=4, shuffle=True, num_workers=4, pin_memory=True)
@@ -336,8 +337,6 @@ def main():
 
             x_spt, y_spt, x_qry, y_qry = x_spt.to(device), y_spt.to(device), x_qry.to(device), y_qry.to(device)
             accs = maml(x_spt, y_spt, x_qry, y_qry)
-            
-            torch.save(maml.state_dict(), model_path)
             
             if step % 100 == 0:
                 print('\n','step:', step, '\ttraining acc:', accs)
@@ -355,6 +354,11 @@ def main():
 
                 # [b, update_step+1]
                 accs = np.array(accs_all_test).mean(axis=0).astype(np.float16)
+                accuracies.append(accs[-1])
+                best_accuracy = max(accuracies)
+                if best_accuracy == accs[-1]:
+                    torch.save(maml.state_dict(), model_path)
+
                 print('Test acc:', accs)
 
 main()    

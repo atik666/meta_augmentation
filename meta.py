@@ -21,9 +21,6 @@ def cross_entropy(X,y):
     """
     m = y.shape[0]
     p = Softmax_temp(X)
-    # We use multidimensional array indexing to extract 
-    # softmax probability of the correct label for each sample.
-    # Refer to https://docs.scipy.org/doc/numpy/user/basics.indexing.html#indexing-multi-dimensional-arrays for understanding multidimensional array indexing.
     log_likelihood = -torch.log(p[range(m),y])
     loss = torch.sum(log_likelihood) / m
     return loss
