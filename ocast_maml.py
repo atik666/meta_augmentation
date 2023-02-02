@@ -276,8 +276,8 @@ def mean_confidence_interval(accs, confidence=0.95):
 
 def main():
     
-    n_way = 20
-    epochs = 25
+    n_way = 5
+    epochs = 20
     k_shot = 1
     k_query = 1
 
@@ -317,9 +317,9 @@ def main():
 
     # batchsz here means total episode number
     
-    train_path = '/home/atik/Documents/UMAML_FSL/data/unsupervised/'
-    test_path = '/home/atik/Documents/UMAML_FSL/data/'
-    model_path = '/home/atik/Documents/Meta Augmentation/model_%sw_%ss_%sq.pth' %(n_way,k_shot,k_query)
+    train_path = '/home/atik/Documents/Ocast/borescope-adr-lm2500-data-develop/Processed/wo_Dup/unlabelled/'
+    test_path = '/home/atik/Documents/Ocast/borescope-adr-lm2500-data-develop/Processed/wo_Dup/'
+    model_path = '/home/atik/Documents/Meta Augmentation/ocast_model_%sw_%ss_%sq.pth' %(n_way,k_shot,k_query)
     
     mini_train = MiniImagenet(train_path, mode='train', n_way=n_way, k_shot=k_shot,
                         k_query=k_query,
