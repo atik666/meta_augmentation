@@ -488,8 +488,8 @@ def mean_confidence_interval(accs, confidence=0.95):
 
 def main():
     
-    n_way = 20
-    epochs = 25
+    n_way = 5
+    epochs = 20
     k_shot = 1
     k_query = 1
 
@@ -527,14 +527,16 @@ def main():
     print(maml)
     print('Total trainable tensors:', num)
     
-    # model_path = '/home/atik/Documents/Meta Augmentation/model_%ss_%sq.pth' %(k_shot,k_query)
+    model_path = '/home/atik/Documents/Meta Augmentation/ocast_model_%sw_%ss_%sq.pth' %(n_way,k_shot,k_query)
     # model_path = '/home/atik/Documents/Meta Augmentation/model_1s_1q.pth'
     
-    # maml.load_state_dict(torch.load(model_path))
+    maml.load_state_dict(torch.load(model_path))
 
     # batchsz here means total episode number
     
-    path = '/home/atik/Documents/UMAML_FSL/data/'
+    #path = '/home/atik/Documents/UMAML_FSL/data/'
+    path = '/home/atik/Documents/Ocast/borescope-adr-lm2500-data-develop/Processed/wo_Dup/'
+    
     mini_train = MiniImagenet(path, mode='train', n_way=n_way, k_shot=k_shot,
                         k_query=k_query,
                         batchsz=10000, resize=84)
