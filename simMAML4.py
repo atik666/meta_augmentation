@@ -52,6 +52,7 @@ class MiniImagenet(Dataset):
             self.transform_query = transforms.Compose([lambda x: Image.open(x).convert('RGB'),
                                                   transforms.RandomHorizontalFlip(0.5),
                                                   transforms.RandomResizedCrop(self.resize,(0.8,1.0)),
+                                                  #transforms.RandomResizedCrop(84),
                                                   transforms.ToTensor(),
                                                   transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
                                                   #transforms.GaussianBlur(kernel_size=(7, 13), sigma=(9, 11)),
@@ -276,7 +277,7 @@ def mean_confidence_interval(accs, confidence=0.95):
 
 def main():
     
-    n_way = 20
+    n_way = 5
     epochs = 25
     k_shot = 1
     k_query = 1

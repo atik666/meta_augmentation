@@ -7,12 +7,12 @@ import glob
 RootDir1 = r'/home/atik/Documents/UMAML_FSL/data/train/'
 TargetFolder1 = r'/home/atik/Documents/UMAML_FSL/data/unsup_100/train/'
 
-for root, dirs, files in os.walk((os.path.normpath(RootDir1)), topdown=False):
-        for name in files:
-            if name.endswith('.jpg') or name.endswith('.jpeg'):
-                #print ("Found")
-                SourceFolder = os.path.join(root,name)
-                shutil.copy2(SourceFolder, TargetFolder1)
+# for root, dirs, files in os.walk((os.path.normpath(RootDir1)), topdown=False):
+#         for name in files:
+#             if name.endswith('.jpg') or name.endswith('.jpeg'):
+#                 #print ("Found")
+#                 SourceFolder = os.path.join(root,name)
+#                 shutil.copy2(SourceFolder, TargetFolder1)
                 
 """"""        
 
@@ -24,6 +24,6 @@ for root, dirs, files in os.walk((os.path.normpath(RootDir1)), topdown=False):
             TargetFolder = os.path.join(TargetFolder1,i)
             if not os.path.exists(TargetFolder):
                 os.makedirs(TargetFolder)
-            for filename in glob.glob(os.path.join(SourceFolder, '*.*'))[:100]: # select number of files
+            for filename in glob.glob(os.path.join(SourceFolder, '*.*'))[:300]: # select number of files
                 print(filename)
                 shutil.copy(filename, TargetFolder)
