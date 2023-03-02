@@ -5,7 +5,7 @@ import torch
 import torch.nn.functional as F 
 import numpy as np
 
-def Softmax_temp(input, t=100):
+def Softmax_temp(input, t=10):
     input = input.T
     ex = torch.exp(input/t)
     sum = torch.sum(ex, axis=0)

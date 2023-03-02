@@ -490,8 +490,8 @@ def main():
     
     n_way = 5
     epochs = 25
-    k_shot = 5
-    k_query = 5
+    k_shot = 1
+    k_query = 1
 
     torch.manual_seed(222)
     torch.cuda.manual_seed_all(222)
@@ -527,9 +527,9 @@ def main():
     print('Total trainable tensors:', num)
     
     # model_path = '/home/atik/Documents/Meta Augmentation/ocast_model_%sw_%ss_%sq.pth' %(n_way,k_shot,k_query)
-    model_path = '/home/atik/Documents/Meta Augmentation/model_1s_1q.pth'
+    model_path = '/home/atik/Documents/Meta Augmentation/MAML/model_1s_1q.pth'
     
-    maml.load_state_dict(torch.load(model_path))
+    #maml.load_state_dict(torch.load(model_path))
 
     # batchsz here means total episode number
     
@@ -572,6 +572,7 @@ def main():
                 accs = np.array(accs_all_test).mean(axis=0).astype(np.float16)
                 accuracies.append(accs[-1])
                 print('Test acc:', accs)
+                print("Best accuracy: ", max(accuracies))
     best_accuracy = max(accuracies)
     print("\n"+"Best test accuracy: ", best_accuracy)
 
